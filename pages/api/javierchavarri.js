@@ -1,20 +1,7 @@
 const cheerio = require('cheerio');
+const { generateRssXml } = require('../../util/rss');
 
 const ORIGIN = 'https://www.javierchavarri.com/'
-
-function generateRssXml(channel, items) {
-    function objectToXml(object) {
-        return Object.entries(object).map(([key, value]) => `<${key}>${value}</${key}>`).join('')
-    } 
-    return `
-    <rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        ${objectToXml(channel)}
-        ${items.map(item => `<item>${objectToXml(item)}</item>`).join('')}
-    </channel>
-    </rss>
-    `
-}
 
 export default async function handler(req, res) {
     const html = await fetch(ORIGIN).then(r => r.text())
